@@ -1,64 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Callease AI Chat Widget</title>
 
     <!-- Widget Configuration -->
     <script>
-      window.ChatWidgetConfig = {
-        webhook: {
-          url: "https://chatbot.callease.ai:8082/webhook/cb0f3635-1b7f-4386-aa68-77dcba9dd84a/chat",
-          route: "general",
-        },
-        branding: {
-          logo: "https://callease.ai/wp-content/uploads/2023/03/cropped-cropped-logo-512-1.png",
-          name: "Callease AI",
-          welcomeText: "Hi 👋, how can we help?",
-          responseTimeText: "We typically respond right away",
-          poweredBy: {
-            text: "Powered by Callease AI",
-            link: "https://callease.ai",
-          },
-        },
-        style: {
-          primaryColor: "#010ed0",
-          secondaryColor: "#010ed0",
-          position: "right",
-          backgroundColor: "#ffffff",
-          fontColor: "#333333",
-        },
-      };
+        window.ChatWidgetConfig = {
+            webhook: {
+                url: 'https://chatbot.callease.ai:8082/webhook/cb0f3635-1b7f-4386-aa68-77dcba9dd84a/chat',
+                route: 'general'
+            },
+            branding: {
+                logo: 'https://callease.ai/wp-content/uploads/2023/03/cropped-cropped-logo-512-1.png',
+                name: 'Callease AI',
+                welcomeText: 'Hi 👋, how can we help?',
+                responseTimeText: 'We typically respond right away',
+                poweredBy: {
+                    text: 'Powered by Callease AI',
+                    link: 'https://callease.ai'
+                }
+            },
+            style: {
+                primaryColor: '#010ed0',
+                secondaryColor: '#010ed0',
+                position: 'right',
+                backgroundColor: '#ffffff',
+                fontColor: '#333333'
+            }
+        };
     </script>
-    <script src="https://cdn.jsdelivr.net/gh/Orace227/Callease-chatbot@main/index.js"></script>
 
     <!-- Custom styles -->
     <style>
-      body {
-        font-family: "Arial", sans-serif;
-        margin: 0;
-        padding: 0;
-      }
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
-      .n8n-chat-widget .chat-toggle {
-        background: linear-gradient(135deg, #010ed0 0%, #010ed0 100%);
-        padding: 10px;
-      }
+        .n8n-chat-widget .chat-toggle {
+            background: linear-gradient(135deg, #010ed0 0%, #010ed0 100%);
+            padding: 10px;
+        }
 
-      .n8n-chat-widget .chat-message.bot {
-        background: #f7f7f7;
-      }
+        .n8n-chat-widget .chat-message.bot {
+            background: #f7f7f7;
+        }
 
-      .n8n-chat-widget .chat-message.user {
-        background: linear-gradient(135deg, #010ed0 0%, #010ed0 100%);
-      }
+        .n8n-chat-widget .chat-message.user {
+            background: linear-gradient(135deg, #010ed0 0%, #010ed0 100%);
+        }
     </style>
-  </head>
+</head>
 
-  <body>
+<body>
     <!-- Your page content goes here -->
 
     <!-- Import chat widget script -->
-  </body>
+    <script src="index.js"></script>
+</body>
+
 </html>
