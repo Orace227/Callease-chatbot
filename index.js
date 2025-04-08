@@ -411,15 +411,17 @@
             flex-direction: column;
             gap: 10px;
             margin-top: 15px;
+            
             justify-content: center;
         }
 
         .n8n-chat-widget .quick-reply-button {
             padding: 10px 16px;
+            margin: 0px 35px;
             border-radius: 20px;
-            border: 1px solid #6247E9;
+            border: 1px solid #010ed0;
             background: transparent;
-            color: #6247E9;
+            color: #010ed0;
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
@@ -820,7 +822,7 @@
             <textarea placeholder="Send a message..." rows="1"></textarea>
             <button type="submit">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                    <path  fill="currentColor" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
                 </svg>
             </button>
         </div>
