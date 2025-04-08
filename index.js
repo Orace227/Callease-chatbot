@@ -461,7 +461,129 @@
         @keyframes loadingDot {
             0%, 80%, 100% { transform: scale(0); }
             40% { transform: scale(1); }
-        }
+        } 
+      /* Title bubble wrapper styling */
+    .n8n-chat-widget .message-bubble-wrapper {
+        position: fixed;
+        bottom: 280px;
+        right: 90px;
+        z-index: 999;
+        width: 280px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        overflow: hidden;
+        border: 1px solid rgba(1, 14, 208, 0.15);
+        transition: all 0.3s ease;
+        opacity: 0.95;
+    }
+
+    .n8n-chat-widget .message-bubble-wrapper:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        opacity: 1;
+    }
+
+    .n8n-chat-widget .message-bubble-wrapper.position-left {
+        right: auto;
+        left: 90px;
+    }
+
+    /* Message-only bubble styling */
+    .n8n-chat-widget .message-bubble-only-wrapper {
+        position: fixed;
+        z-index: 999;
+        
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        border: 1px solid rgba(1, 14, 208, 0.12);
+        transition: all 0.3s ease;
+        opacity: 0.9;
+    }
+
+    .n8n-chat-widget .message-bubble-only-wrapper:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 16px rgba(0, 0, 0, 0.12);
+        opacity: 1;
+    }
+
+    .n8n-chat-widget .message-bubble-only-wrapper.position-left {
+        right: auto;
+        left: 90px;
+    }
+
+    /* Bubble header styling */
+    .n8n-chat-widget .bubble-header {
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(1, 14, 208, 0.08);
+        background-color: rgba(1, 14, 208, 0.02);
+    }
+
+    .n8n-chat-widget .bubble-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .n8n-chat-widget .bubble-brand img {
+        width: 30px;
+        height: 30px;
+        border-radius: 6px;
+        background: #ffffff;
+        padding: 5px;
+        object-fit: cover;
+        border: 1px solid rgba(1, 14, 208, 0.1);
+    }
+
+    .n8n-chat-widget .bubble-brand span {
+        font-weight: 600;
+        font-size: 15px;
+        color: #333;
+    }
+
+    .n8n-chat-widget .close-bubble {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 18px;
+        color: #ffffff;
+
+        padding: 0;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.2s ease;
+        
+        font-size: 30px;
+    }
+
+    .n8n-chat-widget .close-bubble:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+        color: #555;
+    }
+
+    /* Message content styling */
+    .n8n-chat-widget .message-bubble {
+        padding: 14px 18px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        line-height: 1.4;
+        color: #444;
+        font-weight: 400;
+    }
+
+    .n8n-chat-widget .message-bubble:hover {
+        background-color: rgba(1, 14, 208, 0.04);
+    }
     `
 
     // Load Geist font
@@ -530,6 +652,133 @@
 
     const chatContainer = document.createElement("div")
     chatContainer.className = `chat-container${config.style.position === "left" ? " position-left" : ""}`
+
+
+    const bubbleMessages = [
+        "Want to make an appointment?",
+        "Are you looking for business website?"
+    ];
+    // First create a title bubble
+    const titleBubbleWrapper = document.createElement("div");
+    titleBubbleWrapper.className = `message-bubble-wrapper${config.style.position === "left" ? " position-left" : ""}`;
+    // titleBubbleWrapper.style.border = "2px solid var(--chat--color-primary)";
+    titleBubbleWrapper.style.bottom = "215px"; // Position higher than other bubbles
+    titleBubbleWrapper.style.right = config.style.position === "left" ? "auto" : "70px"; // Match message bubbles' right position
+    titleBubbleWrapper.style.left = config.style.position === "left" ? "90px" : "auto";
+    // Create bubble header with company name and close button for title
+    const titleBubbleHeader = document.createElement("div");
+    titleBubbleHeader.className = "bubble-header";
+    titleBubbleHeader.style.background = "var(--chat--color-header-bg)";
+    titleBubbleHeader.style.color = "white";
+    titleBubbleHeader.style.padding = "14px 18px";
+
+    // Add company brand info
+    const titleBrandInfo = document.createElement("div");
+    titleBrandInfo.className = "bubble-brand";
+
+    titleBrandInfo.innerHTML = `
+    <img src="${config.branding.logo}" alt="${config.branding.name}">
+    <span>${config.branding.name}</span>
+    
+`;
+    titleBrandInfo.querySelector("span").style.color = "white";
+
+    // Add close button for title bubble
+    const titleCloseBubbleButton = document.createElement("button");
+    titleCloseBubbleButton.className = "close-bubble";
+    titleCloseBubbleButton.innerHTML = "×";
+    titleCloseBubbleButton.setAttribute("aria-label", "Close title");
+
+    // Add event listener to close button for title
+    titleCloseBubbleButton.addEventListener("click", (e) => {
+        e.stopPropagation();
+        titleBubbleWrapper.style.display = "none";
+
+        // Also hide message bubbles when title is closed
+        document.querySelectorAll('.message-bubble-only-wrapper').forEach(bubble => {
+            bubble.style.display = "none";
+        });
+    });
+
+    titleBubbleHeader.appendChild(titleBrandInfo);
+    titleBubbleHeader.appendChild(titleCloseBubbleButton);
+    titleBubbleWrapper.appendChild(titleBubbleHeader);
+    const personalGuideMsg = document.createElement("div");
+    personalGuideMsg.className = "message-bubble";
+    personalGuideMsg.innerHTML = "Hey! I am your personal guide from Callease Ai , how can I assist you?";
+    personalGuideMsg.style.fontWeight = "500";
+    titleBubbleWrapper.appendChild(personalGuideMsg);
+
+    // Now create regular message bubbles (without headers)
+
+    // Create individual bubble for each message
+    bubbleMessages.forEach((message, index) => {
+        const bubbleWrapper = document.createElement("div");
+        bubbleWrapper.className = `message-bubble-only-wrapper${config.style.position === "left" ? " position-left" : ""}`;
+
+        // Position bubbles at different heights
+        bubbleWrapper.style.position = "fixed";
+        bubbleWrapper.style.bottom = (140 - index * 70) + "px"; // Better spacing
+        bubbleWrapper.style.right = config.style.position === "left" ? "auto" : "70px";
+        bubbleWrapper.style.left = config.style.position === "left" ? "90px" : "auto";
+
+        bubbleWrapper.style.zIndex = "99999";
+        // bubbleWrapper.style.maxWidth = "280px";
+        bubbleWrapper.style.background = "white";
+        bubbleWrapper.style.borderRadius = "10px";
+        bubbleWrapper.style.boxShadow = "0 2px 10px rgba(0, 0, 0, 0.1)";
+        bubbleWrapper.style.overflow = "hidden";
+        bubbleWrapper.style.marginBottom = "5px";
+        bubbleWrapper.style.border = "1px solid rgba(1, 14, 208, 0.2)";
+
+        // Create actual message bubble (without header)
+        const bubble = document.createElement("div");
+        bubble.className = "message-bubble";
+        bubble.textContent = message;
+
+        bubble.addEventListener("click", () => {
+            // Open the chat if closed
+            if (!chatContainer.classList.contains("open")) {
+                chatContainer.classList.add("open");
+
+                // Update toggle button icon
+                toggleButton.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round"
+                    class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-down">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M12 5l0 14" />
+                    <path d="M18 13l-6 6" />
+                    <path d="M6 13l6 6" />
+                </svg>
+            `;
+
+                // Start conversation if not already started
+                if (!conversationStarted) {
+                    startNewConversation();
+                } else {
+                    // Show the chat interface
+                    welcomeScreen.classList.add("hidden");
+                    chatInterface.classList.add("active");
+                }
+            }
+
+            // Send the message
+            sendMessage(message);
+
+            // Hide all bubbles
+            document.querySelectorAll('.message-bubble-only-wrapper, .message-bubble-wrapper').forEach(bubble => {
+                bubble.style.display = "none";
+            });
+        });
+
+        bubbleWrapper.appendChild(bubble);
+        widgetContainer.appendChild(bubbleWrapper);
+    });
+
+    // Add the title bubble to the DOM
+    widgetContainer.appendChild(titleBubbleWrapper);
 
     // Create a welcome screen
     const welcomeScreen = document.createElement("div")
@@ -831,6 +1080,8 @@
 
                 // Replace **text** with <strong>text</strong>
                 formattedMessage = formattedMessage.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+                formattedMessage = formattedMessage.replace(/\[(.*?)\]\((https?:\/\/[^\s)]+)\)/g,
+                    '<a href="$2" target="_blank">$1</a>');
 
                 return formattedMessage;
             }
@@ -927,12 +1178,18 @@
 
         // When toggling open, ensure we start with welcome screen if no conversation
         if (chatContainer.classList.contains("open")) {
+            document.querySelectorAll('.message-bubble-only-wrapper, .message-bubble-wrapper').forEach(bubble => {
+                bubble.style.display = "none";
+            });
             if (conversationStarted) {
                 startNewConversation()
                 // If conversation already started, show the chat interface
                 welcomeScreen.classList.add("hidden")
                 chatInterface.classList.add("active")
             } else {
+                document.querySelectorAll('.message-bubble-only-wrapper, .message-bubble-wrapper').forEach(bubble => {
+                    bubble.style.display = "block";
+                });
                 // Otherwise show the welcome screen
                 welcomeScreen.classList.remove("hidden")
                 chatInterface.classList.remove("active")
@@ -959,6 +1216,9 @@
     const closeButtons = chatContainer.querySelectorAll(".close-button")
     closeButtons.forEach((button) => {
         button.addEventListener("click", () => {
+            document.querySelectorAll('.message-bubble-only-wrapper, .message-bubble-wrapper').forEach(bubble => {
+                bubble.style.display = "block";
+            });
             chatContainer.classList.remove("open")
             toggleButton.innerHTML = `
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -973,7 +1233,11 @@
   `;
         })
     })
-
+    if (chatContainer.classList.contains("open")) {
+        document.querySelectorAll('.message-bubble-wrapper').forEach(bubble => {
+            bubble.style.display = "none";
+        });
+    }
     // Reset conversation on page reload
     window.addEventListener("beforeunload", () => {
         localStorage.removeItem("chatSessionId")
