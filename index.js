@@ -430,6 +430,7 @@
 
         .n8n-chat-widget .quick-reply-button:hover {
             background-color: rgba(98, 71, 233, 0.1);
+             color: #010ed0 !important;
         }
         .n8n-chat-widget .loading-indicator {
             display: flex;
@@ -657,15 +658,16 @@
 
 
     const bubbleMessages = [
-        "Want to make an appointment?",
-        "Are you looking for business website?"
+        "General Queries",
+        "Raise a Support Ticket",
+        "About Callease AI",
     ];
     // First create a title bubble
     const titleBubbleWrapper = document.createElement("div");
     titleBubbleWrapper.className = `message-bubble-wrapper${config.style.position === "left" ? " position-left" : ""}`;
     // titleBubbleWrapper.style.border = "2px solid var(--chat--color-primary)";
-    titleBubbleWrapper.style.bottom = "215px"; // Position higher than other bubbles
-    titleBubbleWrapper.style.right = config.style.position === "left" ? "auto" : "70px"; // Match message bubbles' right position
+    titleBubbleWrapper.style.bottom = "260px"; // Position higher than other bubbles
+    titleBubbleWrapper.style.right = config.style.position === "left" ? "auto" : "60px"; // Match message bubbles' right position
     titleBubbleWrapper.style.left = config.style.position === "left" ? "90px" : "auto";
     // Create bubble header with company name and close button for title
     const titleBubbleHeader = document.createElement("div");
@@ -707,7 +709,7 @@
     titleBubbleWrapper.appendChild(titleBubbleHeader);
     const personalGuideMsg = document.createElement("div");
     personalGuideMsg.className = "message-bubble";
-    personalGuideMsg.innerHTML = "Hey! I am your personal guide from Callease Ai , how can I assist you?";
+    personalGuideMsg.innerHTML = "Hey there! 😊 How can I assist you today?";
     personalGuideMsg.style.fontWeight = "500";
     titleBubbleWrapper.appendChild(personalGuideMsg);
 
@@ -720,8 +722,8 @@
 
         // Position bubbles at different heights
         bubbleWrapper.style.position = "fixed";
-        bubbleWrapper.style.bottom = (140 - index * 70) + "px"; // Better spacing
-        bubbleWrapper.style.right = config.style.position === "left" ? "auto" : "70px";
+        bubbleWrapper.style.bottom = (195 - index * 60) + "px"; // Better spacing
+        bubbleWrapper.style.right = config.style.position === "left" ? "auto" : "60px";
         bubbleWrapper.style.left = config.style.position === "left" ? "90px" : "auto";
 
         bubbleWrapper.style.zIndex = "99999";
@@ -731,7 +733,7 @@
         bubbleWrapper.style.boxShadow = "0 2px 10px rgba(0, 0, 0, 0.1)";
         bubbleWrapper.style.overflow = "hidden";
         bubbleWrapper.style.marginBottom = "5px";
-        bubbleWrapper.style.border = "1px solid rgba(1, 14, 208, 0.2)";
+        bubbleWrapper.style.border = "1px solid #010ed0";
 
         // Create actual message bubble (without header)
         const bubble = document.createElement("div");
@@ -821,9 +823,7 @@
         <div class="chat-input">
             <textarea placeholder="Send a message..." rows="1"></textarea>
             <button type="submit">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path  fill="currentColor" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-                </svg>
+              <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-send-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4.698 4.034l16.302 7.966l-16.302 7.966a.503 .503 0 0 1 -.546 -.124a.555 .555 0 0 1 -.12 -.568l2.468 -7.274l-2.468 -7.274a.555 .555 0 0 1 .12 -.568a.503 .503 0 0 1 .546 -.124z" /><path d="M6.5 12h14.5" /></svg>
             </button>
         </div>
         <div class="chat-footer">
@@ -955,7 +955,7 @@
             const botMessageDiv = document.createElement("div")
             botMessageDiv.className = "chat-message bot"
             botMessageDiv.textContent =
-                "Hey there! 😊 How can I assist you today? If you have any questions or need information about our services, feel free to ask. I'm here to help!"
+                "Hey there! 😊 How can I assist you today? "
 
             botMessageContainer.appendChild(botAvatar)
             botMessageContainer.appendChild(botMessageDiv)
