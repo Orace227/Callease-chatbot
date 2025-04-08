@@ -12,7 +12,7 @@
 
         .n8n-chat-widget .chat-container {
             position: fixed;
-            bottom: 20px;
+            bottom: 90px;
             right: 20px;
             z-index: 1000;
             display: none;
@@ -254,7 +254,7 @@
             color: white;
             border: none;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(1, 14, 208, 0.3);
+            box-shadow: 0 0px 25px rgba(1, 14, 208, 0.6);
             z-index: 999;
             transition: transform 0.3s;
             display: flex;
@@ -268,13 +268,12 @@
         }
 
         .n8n-chat-widget .chat-toggle:hover {
-            transform: scale(1.05);
+            transform: scale(1.1);
         }
 
         .n8n-chat-widget .chat-toggle svg {
-            width: 24px;
-            height: 24px;
-            fill: currentColor;
+            width: 32px;
+            height: 32px;
         }
 
         .n8n-chat-widget .chat-footer {
@@ -409,7 +408,7 @@
         /* Quick reply buttons */
         .n8n-chat-widget .quick-reply-buttons {
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
             gap: 10px;
             margin-top: 15px;
             justify-content: center;
@@ -589,10 +588,18 @@
 
     const toggleButton = document.createElement("button")
     toggleButton.className = `chat-toggle${config.style.position === "left" ? " position-left" : ""}`
+
     toggleButton.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M12 2C6.477 2 2 6.477 2 12c0 1.821.487 3.53 1.338 5L2.5 21.5l4.5-.838A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.476 0-2.886-.313-4.156-.878l-3.156.586.586-3.156A7.962 7.962 0 014 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8z"/>
-        </svg>`
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-message-report">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12z" />
+      <path d="M12 8v3" />
+      <path d="M12 14v.01" />
+    </svg>
+  `;
 
     widgetContainer.appendChild(chatContainer)
     widgetContainer.appendChild(toggleButton)
@@ -709,8 +716,9 @@
             const quickReplyContainer = document.createElement("div")
             quickReplyContainer.className = "quick-reply-buttons"
             quickReplyContainer.innerHTML = `
-            <button class="quick-reply-button">i Want to book an appointment</button>
-            <button class="quick-reply-button">I Want to know more about your company</button>
+            <button class="quick-reply-button">General Queries</button>
+            <button class="quick-reply-button">Raise a Support Ticket</button>
+            <button class="quick-reply-button">About Callease AI</button>
         `
             // ["Want to make an appointment?", "Want to know more about our services?"],
             messagesContainer.appendChild(quickReplyContainer)
@@ -904,6 +912,19 @@
     toggleButton.addEventListener("click", () => {
         chatContainer.classList.toggle("open")
 
+        toggleButton.innerHTML = `
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"
+                class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-down">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <path d="M12 5l0 14" />
+                <path d="M18 13l-6 6" />
+                <path d="M6 13l6 6" />
+              </svg>
+            `;
+
+
         // When toggling open, ensure we start with welcome screen if no conversation
         if (chatContainer.classList.contains("open")) {
             if (conversationStarted) {
@@ -918,6 +939,19 @@
                 // Clear any messages that might be in the container
                 messagesContainer.innerHTML = ""
             }
+        }
+        else {
+            toggleButton.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round"
+              class="icon icon-tabler icons-tabler-outline icon-tabler-message-report">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12z" />
+              <path d="M12 8v3" />
+              <path d="M12 14v.01" />
+            </svg>
+          `;
         }
     })
 
