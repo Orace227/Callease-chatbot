@@ -66,6 +66,7 @@
         }
 
         .n8n-chat-widget .close-button:hover {
+        backgroundColor: none;
             opacity: 1;
         }
 
@@ -569,8 +570,9 @@
     }
 
     .n8n-chat-widget .close-bubble:hover {
-        background-color: rgba(0, 0, 0, 0.05);
-        color: #555;
+        
+backgroundColor:none
+        color: #ffffff;
     }
 
     /* Message content styling */
@@ -869,7 +871,17 @@
                 (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16),
             )
     }
+    function formatMessage(message) {
+        // Replace new lines with <br>
+        let formattedMessage = message.replace(/\n/g, "<br>");
 
+        // Replace **text** with <strong>text</strong>
+        formattedMessage = formattedMessage.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+        formattedMessage = formattedMessage.replace(/\[(.*?)\]\((https?:\/\/[^\s)]+)\)/g,
+            '<a href="$2" target="_blank">$1</a>');
+
+        return formattedMessage;
+    }
     // Add feedback buttons to bot messages
     function addFeedbackToMessage(messageDiv) {
         const feedbackContainer = document.createElement("div")
@@ -890,7 +902,7 @@
 
         messageDiv.appendChild(feedbackContainer)
     }
-
+    let chatHistory = [];
     async function startNewConversation() {
         // Only start new conversation if not already started
         // if (conversationStarted) return
@@ -926,15 +938,15 @@
                 },
             ]
 
-            const response = await fetch(config.webhook.url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            })
+            // const response = await fetch(config.webhook.url, {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //     },
+            //     body: JSON.stringify(data),
+            // })
 
-            const responseData = await response.json()
+            // const responseData = await response.json()
 
             // Remove loading indicator
             messagesContainer.removeChild(loadingIndicator)
@@ -952,14 +964,21 @@
             botAvatar.src = config.branding.logo
             botAvatar.alt = config.branding.name
 
-            const botMessageDiv = document.createElement("div")
-            botMessageDiv.className = "chat-message bot"
-            botMessageDiv.textContent =
-                "Hey there! 😊 How can I assist you today? "
+            if (chatHistory.length <= 0) {
+                const botMessageDiv = document.createElement("div")
+                botMessageDiv.className = "chat-message bot"
+                botMessageDiv.textContent =
+                    "Hey there! 😊 How can I assist you today? "
+                console.log("Chat history:", chatHistory)
+                botMessageContainer.appendChild(botAvatar)
+                botMessageContainer.appendChild(botMessageDiv)
+                messagesContainer.appendChild(botMessageContainer)
+                chatHistory.push({
+                    type: 'bot',
+                    content: "Hey there! 😊 How can I assist you today?"
+                });
 
-            botMessageContainer.appendChild(botAvatar)
-            botMessageContainer.appendChild(botMessageDiv)
-            messagesContainer.appendChild(botMessageContainer)
+            }
 
             // addFeedbackToMessage(botMessageDiv)
 
@@ -984,7 +1003,36 @@
                     quickReplyContainer.remove()
                 })
             })
+            if (chatHistory.length > 0) {
+                // Clear any existing messages
+                messagesContainer.innerHTML = "";
 
+                // Restore messages from history array
+                chatHistory.forEach(msg => {
+                    if (msg.type === 'user') {
+                        const userMessageDiv = document.createElement("div");
+                        userMessageDiv.className = "chat-message user";
+                        userMessageDiv.textContent = msg.content;
+                        messagesContainer.appendChild(userMessageDiv);
+                    } else if (msg.type === 'bot') {
+                        const botMessageContainer = document.createElement("div");
+                        botMessageContainer.className = "message-with-avatar";
+
+                        const botAvatar = document.createElement("img");
+                        botAvatar.className = "bot-avatar";
+                        botAvatar.src = config.branding.logo;
+                        botAvatar.alt = config.branding.name;
+
+                        const botMessageDiv = document.createElement("div");
+                        botMessageDiv.className = "chat-message bot";
+                        botMessageDiv.innerHTML = formatMessage(msg.content);
+
+                        botMessageContainer.appendChild(botAvatar);
+                        botMessageContainer.appendChild(botMessageDiv);
+                        messagesContainer.appendChild(botMessageContainer);
+                    }
+                })
+            }
             messagesContainer.scrollTop = messagesContainer.scrollHeight
         } catch (error) {
             console.error("Error:", error)
@@ -1010,7 +1058,10 @@
         if (!currentSessionId) {
             currentSessionId = generateUUID()
         }
-
+        chatHistory.push({
+            type: 'user',
+            content: message
+        });
         const messageData = {
             action: "sendMessage",
             sessionId: currentSessionId,
@@ -1056,6 +1107,11 @@
 
             const data = await response.json()
             console.log("Response data:", data)
+            const botResponse = Array.isArray(data) ? data[0].output : data.output;
+            chatHistory.push({
+                type: 'bot',
+                content: botResponse
+            });
 
             // Remove loading indicator
             messagesContainer.removeChild(loadingIndicator)
@@ -1076,17 +1132,7 @@
                 ? formatMessage(data[0].output)
                 : formatMessage(data.output);
 
-            function formatMessage(message) {
-                // Replace new lines with <br>
-                let formattedMessage = message.replace(/\n/g, "<br>");
 
-                // Replace **text** with <strong>text</strong>
-                formattedMessage = formattedMessage.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-                formattedMessage = formattedMessage.replace(/\[(.*?)\]\((https?:\/\/[^\s)]+)\)/g,
-                    '<a href="$2" target="_blank">$1</a>');
-
-                return formattedMessage;
-            }
             botMessageContainer.appendChild(botAvatar)
             botMessageContainer.appendChild(botMessageDiv)
             messagesContainer.appendChild(botMessageContainer)
