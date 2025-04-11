@@ -190,28 +190,31 @@
             color: var(--chat--color-font);
             align-self: flex-start;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            border-radius: 18px 18px 18px 0;
+            border-radius: 0px 18px 18px 18px;
         }
 
-        .n8n-chat-widget .chat-input {
-            padding: 16px;
-            background: var(--chat--color-background);
-            border-top: 1px solid rgba(1, 14, 208, 0.1);
-            display: flex;
-            gap: 8px;
-        }
+       .n8n-chat-widget .chat-input {
+    padding: 16px;
+    background: var(--chat--color-background);
+    border-top: 1px solid rgba(1, 14, 208, 0.1);
+    display: flex;
+    gap: 8px;
+    align-items: center; /* This centers items vertically */
+}
 
-        .n8n-chat-widget .chat-input textarea {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid rgba(1, 14, 208, 0.2);
-            border-radius: 15px;
-            background: var(--chat--color-background);
-            color: var(--chat--color-font);
-            resize: none;
-            font-family: inherit;
-            font-size: 14px;
-        }
+       .n8n-chat-widget .chat-input textarea {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid rgba(1, 14, 208, 0.2);
+    border-radius: 15px;
+    background: var(--chat--color-background);
+    color: var(--chat--color-font);
+    resize: none;
+    font-family: inherit;
+    font-size: 14px;
+    max-height: 150px;  /* Set your desired maximum height */
+    overflow-y: auto;   /* Enable vertical scrolling */
+}
 
         .n8n-chat-widget .chat-input textarea::placeholder {
             color: var(--chat--color-font);
@@ -219,22 +222,25 @@
         }
 
         .n8n-chat-widget .chat-input button {
-            background: linear-gradient(135deg, var(--chat--color-primary) 0%, var(--chat--color-secondary) 100%);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            transition: transform 0.2s;
-            font-family: inherit;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    background: linear-gradient(135deg, var(--chat--color-primary) 0%, var(--chat--color-secondary) 100%);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    font-family: inherit;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center; /* This ensures the button stays centered */
+    flex-shrink: 0; /* Prevents the button from shrinking */
+}
 
         .n8n-chat-widget .chat-input button svg {
+            
             width: 20px;
             height: 20px;
             fill: white;
@@ -665,126 +671,6 @@ backgroundColor:none
         "About Callease AI",
     ];
     // First create a title bubble
-    const titleBubbleWrapper = document.createElement("div");
-    titleBubbleWrapper.className = `message-bubble-wrapper${config.style.position === "left" ? " position-left" : ""}`;
-    // titleBubbleWrapper.style.border = "2px solid var(--chat--color-primary)";
-    titleBubbleWrapper.style.bottom = "260px"; // Position higher than other bubbles
-    titleBubbleWrapper.style.right = config.style.position === "left" ? "auto" : "60px"; // Match message bubbles' right position
-    titleBubbleWrapper.style.left = config.style.position === "left" ? "90px" : "auto";
-    // Create bubble header with company name and close button for title
-    const titleBubbleHeader = document.createElement("div");
-    titleBubbleHeader.className = "bubble-header";
-    titleBubbleHeader.style.background = "var(--chat--color-header-bg)";
-    titleBubbleHeader.style.color = "white";
-    titleBubbleHeader.style.padding = "14px 18px";
-
-    // Add company brand info
-    const titleBrandInfo = document.createElement("div");
-    titleBrandInfo.className = "bubble-brand";
-
-    titleBrandInfo.innerHTML = `
-    <img src="${config.branding.logo}" alt="${config.branding.name}">
-    <span>${config.branding.name}</span>
-    
-`;
-    titleBrandInfo.querySelector("span").style.color = "white";
-
-    // Add close button for title bubble
-    const titleCloseBubbleButton = document.createElement("button");
-    titleCloseBubbleButton.className = "close-bubble";
-    titleCloseBubbleButton.innerHTML = "×";
-    titleCloseBubbleButton.setAttribute("aria-label", "Close title");
-
-    // Add event listener to close button for title
-    titleCloseBubbleButton.addEventListener("click", (e) => {
-        e.stopPropagation();
-        titleBubbleWrapper.style.display = "none";
-
-        // Also hide message bubbles when title is closed
-        document.querySelectorAll('.message-bubble-only-wrapper').forEach(bubble => {
-            bubble.style.display = "none";
-        });
-    });
-
-    titleBubbleHeader.appendChild(titleBrandInfo);
-    titleBubbleHeader.appendChild(titleCloseBubbleButton);
-    titleBubbleWrapper.appendChild(titleBubbleHeader);
-    const personalGuideMsg = document.createElement("div");
-    personalGuideMsg.className = "message-bubble";
-    personalGuideMsg.innerHTML = "Hey there! 😊 How can I assist you today?";
-    personalGuideMsg.style.fontWeight = "500";
-    titleBubbleWrapper.appendChild(personalGuideMsg);
-
-    // Now create regular message bubbles (without headers)
-
-    // Create individual bubble for each message
-    bubbleMessages.forEach((message, index) => {
-        const bubbleWrapper = document.createElement("div");
-        bubbleWrapper.className = `message-bubble-only-wrapper${config.style.position === "left" ? " position-left" : ""}`;
-
-        // Position bubbles at different heights
-        bubbleWrapper.style.position = "fixed";
-        bubbleWrapper.style.bottom = (195 - index * 60) + "px"; // Better spacing
-        bubbleWrapper.style.right = config.style.position === "left" ? "auto" : "60px";
-        bubbleWrapper.style.left = config.style.position === "left" ? "90px" : "auto";
-
-        bubbleWrapper.style.zIndex = "99999";
-        // bubbleWrapper.style.maxWidth = "280px";
-        bubbleWrapper.style.background = "white";
-        bubbleWrapper.style.borderRadius = "10px";
-        bubbleWrapper.style.boxShadow = "0 2px 10px rgba(0, 0, 0, 0.1)";
-        bubbleWrapper.style.overflow = "hidden";
-        bubbleWrapper.style.marginBottom = "5px";
-        bubbleWrapper.style.border = "1px solid #010ed0";
-
-        // Create actual message bubble (without header)
-        const bubble = document.createElement("div");
-        bubble.className = "message-bubble";
-        bubble.textContent = message;
-
-        bubble.addEventListener("click", () => {
-            // Open the chat if closed
-            if (!chatContainer.classList.contains("open")) {
-                chatContainer.classList.add("open");
-
-                // Update toggle button icon
-                toggleButton.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round"
-                    class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-down">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                    <path d="M12 5l0 14" />
-                    <path d="M18 13l-6 6" />
-                    <path d="M6 13l6 6" />
-                </svg>
-            `;
-
-                // Start conversation if not already started
-                if (!conversationStarted) {
-                    startNewConversation();
-                } else {
-                    // Show the chat interface
-                    welcomeScreen.classList.add("hidden");
-                    chatInterface.classList.add("active");
-                }
-            }
-
-            // Send the message
-            sendMessage(message);
-
-            // Hide all bubbles
-            document.querySelectorAll('.message-bubble-only-wrapper, .message-bubble-wrapper').forEach(bubble => {
-                bubble.style.display = "none";
-            });
-        });
-
-        bubbleWrapper.appendChild(bubble);
-        widgetContainer.appendChild(bubbleWrapper);
-    });
-
-    // Add the title bubble to the DOM
-    widgetContainer.appendChild(titleBubbleWrapper);
 
     // Create a welcome screen
     const welcomeScreen = document.createElement("div")
@@ -824,9 +710,17 @@ backgroundColor:none
         <div class="chat-messages"></div>
         <div class="chat-input">
             <textarea placeholder="Send a message..." rows="1"></textarea>
-            <button type="submit">
-              <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-send-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4.698 4.034l16.302 7.966l-16.302 7.966a.503 .503 0 0 1 -.546 -.124a.555 .555 0 0 1 -.12 -.568l2.468 -7.274l-2.468 -7.274a.555 .555 0 0 1 .12 -.568a.503 .503 0 0 1 .546 -.124z" /><path d="M6.5 12h14.5" /></svg>
-            </button>
+         <button type="submit">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+            fill="none" stroke="currentColor" stroke-width="2" 
+            stroke-linecap="round" stroke-linejoin="round" 
+            style="min-height: 24px; min-width: 24px; flex-shrink: 0;"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-send-2">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M4.698 4.034l16.302 7.966l-16.302 7.966a.503 .503 0 0 1 -.546 -.124a.555 .555 0 0 1 -.12 -.568l2.468 -7.274l-2.468 -7.274a.555 .555 0 0 1 .12 -.568a.503 .503 0 0 1 .546 -.124z" fill="none"/>
+            <path d="M6.5 12h14.5" />
+            </svg>
+        </button>
         </div>
         <div class="chat-footer">
             <a href="${config.branding.poweredBy.link}" target="_blank">
@@ -1147,16 +1041,28 @@ backgroundColor:none
                 messagesContainer.removeChild(loadingIndicator)
             }
 
-            // Show error message
+            // Show error message with avatar, matching the successful message format
+            const errorMessageContainer = document.createElement("div")
+            errorMessageContainer.className = "message-with-avatar"
+
+            const botAvatar = document.createElement("img")
+            botAvatar.className = "bot-avatar"
+            botAvatar.src = config.branding.logo
+            botAvatar.alt = config.branding.name
+
             const errorMessageDiv = document.createElement("div")
-            errorMessageDiv.className = "chat-message bot"
+            errorMessageDiv.className = "chat-message bot error" // Added 'error' class for styling if needed
             errorMessageDiv.textContent = "Sorry, there was an error processing your message. Please try again."
-            messagesContainer.appendChild(errorMessageDiv)
+
+            errorMessageContainer.appendChild(botAvatar)
+            errorMessageContainer.appendChild(errorMessageDiv)
+            messagesContainer.appendChild(errorMessageContainer)
         } finally {
             // Re-enable input
             textarea.disabled = false
             sendButton.disabled = false
             textarea.focus()
+
         }
     }
 
