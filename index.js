@@ -166,6 +166,7 @@
         }
 
         .n8n-chat-widget .chat-message {
+            cursor:pointer;
             padding: 12px 16px;
             margin: 8px 0;
             border-radius: 12px;
@@ -173,7 +174,15 @@
             word-wrap: break-word;
             font-size: 14px;
             line-height: 1.5;
+            border: 2px solid #4ade80; /* Tailwind's green-400 */
+            box-shadow: 0 0 5px #4ade80;
         }
+        
+        .chat-message.copied {
+            background: #4ade80 !important;
+            transition: background 0.2s ease;
+        }
+
 
         .n8n-chat-widget .chat-message.user {
             background: linear-gradient(135deg, var(--chat--color-primary) 0%, var(--chat--color-secondary) 100%);
@@ -753,6 +762,7 @@ backgroundColor:none
     document.body.appendChild(widgetContainer)
 
     const newChatBtn = welcomeScreen.querySelector(".new-chat-btn")
+    const chatMessage = welcomeScreen.querySelector(".chat-message")
     const messagesContainer = chatInterface.querySelector(".chat-messages")
     const textarea = chatInterface.querySelector("textarea")
     const sendButton = chatInterface.querySelector('button[type="submit"]')
@@ -776,6 +786,7 @@ backgroundColor:none
 
         return formattedMessage;
     }
+
     // Add feedback buttons to bot messages
     function addFeedbackToMessage(messageDiv) {
         const feedbackContainer = document.createElement("div")
@@ -797,6 +808,7 @@ backgroundColor:none
         messageDiv.appendChild(feedbackContainer)
     }
     let chatHistory = [];
+    console.log("chatHistory", chatHistory)
     async function startNewConversation() {
         // Only start new conversation if not already started
         // if (conversationStarted) return
@@ -862,14 +874,15 @@ backgroundColor:none
                 const botMessageDiv = document.createElement("div")
                 botMessageDiv.className = "chat-message bot"
                 botMessageDiv.textContent =
-                    "Hey there! 😊 How can I assist you today? "
+                    "Hey there! How can I assist you today? "
                 console.log("Chat history:", chatHistory)
                 botMessageContainer.appendChild(botAvatar)
                 botMessageContainer.appendChild(botMessageDiv)
                 messagesContainer.appendChild(botMessageContainer)
                 chatHistory.push({
                     type: 'bot',
-                    content: "Hey there! 😊 How can I assist you today?"
+                    id: generateUUID(),
+                    content: "Hey there! How can I assist you today?"
                 });
 
             }
@@ -902,10 +915,10 @@ backgroundColor:none
                 messagesContainer.innerHTML = "";
 
                 // Restore messages from history array
-                chatHistory.forEach(msg => {
+                chatHistory.forEach((msg) => {
                     if (msg.type === 'user') {
                         const userMessageDiv = document.createElement("div");
-                        userMessageDiv.className = "chat-message user";
+                        userMessageDiv.className = `chat-message user index`;
                         userMessageDiv.textContent = msg.content;
                         messagesContainer.appendChild(userMessageDiv);
                     } else if (msg.type === 'bot') {
@@ -954,6 +967,7 @@ backgroundColor:none
         }
         chatHistory.push({
             type: 'user',
+            id: generateUUID(),
             content: message
         });
         const messageData = {
@@ -1004,6 +1018,7 @@ backgroundColor:none
             const botResponse = Array.isArray(data) ? data[0].output : data.output;
             chatHistory.push({
                 type: 'bot',
+                id: generateUUID(),
                 content: botResponse
             });
 
@@ -1088,6 +1103,24 @@ backgroundColor:none
 
     // Event listeners
     newChatBtn.addEventListener("click", startNewConversation)
+
+    document.addEventListener('click', function (e) {
+        if (e.target.classList.contains('chat-message')) {
+            const element = e.target;
+            const text = element.innerText;
+
+            navigator.clipboard.writeText(text).then(() => {
+                // Add green border class
+                element.classList.add('copied');
+
+                // Remove it after 1.5 seconds
+                setTimeout(() => {
+                    element.classList.remove('copied');
+                }, 1500);
+            });
+        }
+    });
+
 
     sendButton.addEventListener("click", () => {
         const message = textarea.value.trim()
