@@ -66,7 +66,7 @@
         }
 
         .n8n-chat-widget .close-button:hover {
-        backgroundColor: var(--chat--color-header-bg) !important;
+        backgroundColor: none  !important;
             opacity: 1
         }
 
@@ -247,13 +247,6 @@
     align-self: center; /* This ensures the button stays centered */
     flex-shrink: 0; /* Prevents the button from shrinking */
 }
-
-        .n8n-chat-widget .chat-input button svg {
-            
-            width: 20px;
-            height: 20px;
-            fill: white;
-        }
 
         .n8n-chat-widget .chat-input button:hover {
             transform: scale(1.05);
