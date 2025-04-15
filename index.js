@@ -66,8 +66,8 @@
         }
 
         .n8n-chat-widget .close-button:hover {
-        backgroundColor: none;
-            opacity: 1;
+        backgroundColor: var(--chat--color-header-bg) !important;
+            opacity: 1
         }
 
         .n8n-chat-widget .brand-header img {
@@ -713,7 +713,7 @@ backgroundColor:none
     chatInterface.innerHTML = `
         <div class="brand-header">
             <img src="${config.branding.logo}" alt="${config.branding.name}">
-            <span>${config.branding.name}</span>
+            <span>Support Assistant</span>
             <button class="close-button">×</button>
         </div>
         <div class="chat-messages"></div>
@@ -781,9 +781,10 @@ backgroundColor:none
 
         // Replace **text** with <strong>text</strong>
         formattedMessage = formattedMessage.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-        formattedMessage = formattedMessage.replace(/\[(.*?)\]\((https?:\/\/[^\s)]+)\)/g,
-            '<a href="$2" target="_blank">$1</a>');
-
+        formattedMessage = formattedMessage.replace(
+            /\[(.*?)\]\((https?:\/\/[^\s)]+)\)/g,
+            '<a href="$2" target="_blank" style="color: blue; text-decoration: underline;">$1</a>'
+        );
         return formattedMessage;
     }
 
@@ -874,7 +875,7 @@ backgroundColor:none
                 const botMessageDiv = document.createElement("div")
                 botMessageDiv.className = "chat-message bot"
                 botMessageDiv.textContent =
-                    "Hey there! How can I assist you today? "
+                    "Hello! I'm Allen, your assistant from Callease AI. May I know your name, please?"
                 console.log("Chat history:", chatHistory)
                 botMessageContainer.appendChild(botAvatar)
                 botMessageContainer.appendChild(botMessageDiv)
@@ -882,7 +883,7 @@ backgroundColor:none
                 chatHistory.push({
                     type: 'bot',
                     id: generateUUID(),
-                    content: "Hey there! How can I assist you today?"
+                    content: "Hello! I'm Allen, your assistant from Callease AI. May I know your name, please?"
                 });
 
             }
@@ -1068,7 +1069,11 @@ backgroundColor:none
             const errorMessageDiv = document.createElement("div")
             errorMessageDiv.className = "chat-message bot error" // Added 'error' class for styling if needed
             errorMessageDiv.textContent = "Sorry, there was an error processing your message. Please try again."
-
+            chatHistory.push({
+                type: 'bot',
+                id: generateUUID(),
+                content: "Sorry, there was an error processing your message. Please try again."
+            });
             errorMessageContainer.appendChild(botAvatar)
             errorMessageContainer.appendChild(errorMessageDiv)
             messagesContainer.appendChild(errorMessageContainer)
@@ -1103,20 +1108,90 @@ backgroundColor:none
 
     // Event listeners
     newChatBtn.addEventListener("click", startNewConversation)
-
     document.addEventListener('click', function (e) {
         if (e.target.classList.contains('chat-message')) {
             const element = e.target;
             const text = element.innerText;
 
             navigator.clipboard.writeText(text).then(() => {
-                // Add green border class
-                element.classList.add('copied');
+                // Create copy indicator
+                const copyIndicator = document.createElement('div');
+                copyIndicator.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span>Copied to clipboard</span>
+            `;
+                copyIndicator.className = 'copy-indicator';
 
-                // Remove it after 1.5 seconds
+                // Apply styles for the copy indicator
+                const styles = document.createElement('style');
+                styles.textContent = `
+                .copy-indicator {
+                    position: fixed;
+                    bottom: 30px;
+                    left: 50%;
+                    transform: translateX(-50%) translateY(100px);
+                    background: rgba(0, 0, 0, 0.8);
+                    color: white;
+                    padding: 10px 16px;
+                    border-radius: 8px;
+                    font-size: 14px;
+                    font-weight: 500;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                    z-index: 9999;
+                    opacity: 0;
+                    transition: transform 0.4s ease, opacity 0.4s ease;
+                }
+                
+                .copy-indicator svg {
+                    background: #4ade80;
+                    border-radius: 50%;
+                    padding: 2px;
+                }
+                
+                .copy-indicator.show {
+                    opacity: 1;
+                    transform: translateX(-50%) translateY(0);
+                }
+                
+                .copy-indicator.hide {
+                    opacity: 0;
+                    transform: translateX(-50%) translateY(-20px);
+                }
+            `;
+                document.head.appendChild(styles);
+
+                // Add to DOM
+                document.body.appendChild(copyIndicator);
+
+                // Show animation sequence
                 setTimeout(() => {
-                    element.classList.remove('copied');
-                }, 1500);
+                    copyIndicator.classList.add('show');
+
+                    // Remove after delay
+                    setTimeout(() => {
+                        copyIndicator.classList.add('hide');
+                        copyIndicator.classList.remove('show');
+
+                        // Remove from DOM after animation completes
+                        setTimeout(() => {
+                            document.body.removeChild(copyIndicator);
+                        }, 400);
+                    }, 2000);
+                }, 10);
+
+                // Add subtle highlight effect on the message itself
+                element.style.transition = 'box-shadow 0.3s ease';
+                const originalBoxShadow = element.style.boxShadow;
+                element.style.boxShadow = '0 0 0 2px rgba(79, 209, 127, 0.5)';
+
+                setTimeout(() => {
+                    element.style.boxShadow = originalBoxShadow;
+                }, 1000);
             });
         }
     });
