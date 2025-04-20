@@ -597,6 +597,13 @@ backgroundColor:none
     .n8n-chat-widget .message-bubble:hover {
         background-color: rgba(1, 14, 208, 0.04);
     }
+
+    .chat-icon {
+  object-fit: contain;
+  display: block;
+   filter: brightness(0) invert(1); 
+}
+
     `
 
     // Load Geist font
@@ -735,20 +742,15 @@ backgroundColor:none
     // chatContainer.appendChild(welcomeScreen)
     chatContainer.appendChild(chatInterface)
 
+    // Replace with your image URL
+    const imageUrl = "./chatbot_icon.png";
+
     const toggleButton = document.createElement("button")
     toggleButton.className = `chat-toggle${config.style.position === "left" ? " position-left" : ""}`
 
     toggleButton.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round"
-      class="icon icon-tabler icons-tabler-outline icon-tabler-message-report">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12z" />
-      <path d="M12 8v3" />
-      <path d="M12 14v.01" />
-    </svg>
-  `;
+        <img src="${imageUrl}" alt="Chat Icon" width="40" height="40" class="chat-icon" />
+    `;
 
     widgetContainer.appendChild(chatContainer)
     widgetContainer.appendChild(toggleButton)
@@ -1254,16 +1256,8 @@ backgroundColor:none
         }
         else {
             toggleButton.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-message-report">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-              <path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12z" />
-              <path d="M12 8v3" />
-              <path d="M12 14v.01" />
-            </svg>
-          `;
+        <img src="${imageUrl}" alt="Chat Icon" width="40" height="40" class="chat-icon" />
+    `;
         }
     })
 
@@ -1276,16 +1270,8 @@ backgroundColor:none
             });
             chatContainer.classList.remove("open")
             toggleButton.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round"
-      class="icon icon-tabler icons-tabler-outline icon-tabler-message-report">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12z" />
-      <path d="M12 8v3" />
-      <path d="M12 14v.01" />
-    </svg>
-  `;
+            <img src="${imageUrl}" alt="Chat Icon" width="40" height="40" class="chat-icon" />
+            `;
         })
     })
     if (chatContainer.classList.contains("open")) {
