@@ -743,7 +743,7 @@ backgroundColor:none
     chatContainer.appendChild(chatInterface)
 
     // Replace with your image URL
-    const imageUrl = "./chatbot_icon.png";
+    const imageUrl = "https://cdn.jsdelivr.net/gh/Orace227/Callease-chatbot@main/chatbot_icon.png";
 
     const toggleButton = document.createElement("button")
     toggleButton.className = `chat-toggle${config.style.position === "left" ? " position-left" : ""}`
