@@ -16,8 +16,8 @@
             right: 20px;
             z-index: 1000;
             display: none;
-            width: 380px;
-            height: 600px;
+            width: 350px;
+            height: 550px;
             background: var(--chat--color-background);
             border-radius: 12px;
             box-shadow: 0 8px 32px rgba(1, 14, 208, 0.15);
@@ -211,26 +211,29 @@
     align-items: center; /* This centers items vertically */
 }
 
-       .n8n-chat-widget .chat-input textarea {
-    flex: 1;
-    padding: 12px;
-    border: 1px solid rgba(1, 14, 208, 0.2);
-    border-radius: 15px;
-    background: var(--chat--color-background);
-    color: var(--chat--color-font);
-    resize: none;
-    font-family: inherit;
-    font-size: 14px;
-    max-height: 150px;  /* Set your desired maximum height */
-    overflow-y: auto;   /* Enable vertical scrolling */
-}
+    .n8n-chat-widget .chat-input textarea {
+        flex: 1;
+        padding: 12px;
+        border: 1px solid rgba(1, 14, 208, 0.2);
+        border-radius: 15px;
+        background: var(--chat--color-background);
+        color: var(--chat--color-font);
+        resize: none;
+        min-height: 40px;  /* Set a reasonable min-height */
+    height: auto;      /* Let it grow naturally */
+    overflow-y: hidden; /* Hide scrollbar initially */
+        font-family: inherit;
+        font-size: 14px;
+        max-height: 150px !important;  /* Set your desired maximum height */
+        overflow-y: auto;   /* Enable vertical scrolling */
+    }
 
-        .n8n-chat-widget .chat-input textarea::placeholder {
-            color: var(--chat--color-font);
-            opacity: 0.6;
-        }
+    .n8n-chat-widget .chat-input textarea::placeholder {
+        color: var(--chat--color-font);
+        opacity: 0.6;
+    }
 
-        .n8n-chat-widget .chat-input button {
+    .n8n-chat-widget .chat-input button {
     background: linear-gradient(135deg, var(--chat--color-primary) 0%, var(--chat--color-secondary) 100%);
     color: white;
     border: none;
@@ -246,7 +249,7 @@
     justify-content: center;
     align-self: center; /* This ensures the button stays centered */
     flex-shrink: 0; /* Prevents the button from shrinking */
-}
+    }
 
         .n8n-chat-widget .chat-input button:hover {
             transform: scale(1.05);
@@ -256,8 +259,8 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            width: 60px;
-            height: 60px;
+            width: 55px;
+            height: 55px;
             border-radius: 30px;
             background: linear-gradient(135deg, var(--chat--color-primary) 0%, var(--chat--color-secondary) 100%);
             color: white;
