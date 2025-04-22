@@ -222,14 +222,14 @@
         
         .n8n-chat-widget .chat-input textarea {
             flex: 1;
-            padding: 12px;
+            padding: 16px;
             border: 1px solid rgba(120, 125, 192, 0.81);
             border-radius: 15px;
             background: var(--chat--color-background);
             color: var(--chat--color-font);
             resize: none;
-            height: 20px;      
-            min-height: 20px;  
+            height: 28px;      
+            min-height: 28px;  
             max-height: 160px; 
             overflow-y: auto;  
             font-family: inherit;
@@ -888,7 +888,7 @@
                 const botMessageDiv = document.createElement("div")
                 botMessageDiv.className = "chat-message bot"
                 botMessageDiv.textContent =
-                    "Hello! I'm sobran Allen, your assistant from Callease AI. May I know your name, please?"
+                    "Hello! I'm sobran rajak Allen, your assistant from Callease AI. May I know your name, please?"
                 console.log("Chat history:", chatHistory)
                 botMessageContainer.appendChild(botAvatar)
                 botMessageContainer.appendChild(botMessageDiv)
@@ -896,7 +896,7 @@
                 chatHistory.push({
                     type: 'bot',
                     id: generateUUID(),
-                    content: "Hello! I'm sobran Allen, your assistant from Callease AI. May I know your name, please?"
+                    content: "Hello! I'm sobran rajak Allen, your assistant from Callease AI. May I know your name, please?"
                 });
 
             }
