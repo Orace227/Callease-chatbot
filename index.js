@@ -210,6 +210,15 @@
             gap: 8px;
             align-items: center; /* This centers items vertically */
         }
+
+        .n8n-chat-widget .chat-input textarea::-webkit-scrollbar {
+            display: none; /* Hide scrollbar for Chrome, Safari and Opera */
+        }
+        
+        .n8n-chat-widget .chat-input textarea {
+            -ms-overflow-style: none;  /* Hide scrollbar for IE and Edge */
+            scrollbar-width: none;  /* Hide scrollbar for Firefox */
+        }
         
         .n8n-chat-widget .chat-input textarea {
             flex: 1;
