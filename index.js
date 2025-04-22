@@ -208,16 +208,16 @@
             border-top: 1px solid rgba(1, 14, 208, 0.1);
             display: flex;
             gap: 8px;
-            align-items: center; /* This centers items vertically */
+            align-items: center;
         }
 
         .n8n-chat-widget .chat-input textarea::-webkit-scrollbar {
-            display: none; /* Hide scrollbar for Chrome, Safari and Opera */
+            display: none;
         }
         
         .n8n-chat-widget .chat-input textarea {
-            -ms-overflow-style: none;  /* Hide scrollbar for IE and Edge */
-            scrollbar-width: none;  /* Hide scrollbar for Firefox */
+            -ms-overflow-style: none; 
+            scrollbar-width: none; 
         }
         
         .n8n-chat-widget .chat-input textarea {
@@ -228,13 +228,13 @@
             background: var(--chat--color-background);
             color: var(--chat--color-font);
             resize: none;
-            height: 40px;      /* Fixed initial height (1 line) */
-            min-height: 40px;  /* Minimum height (1 line) */
-            max-height: 160px; /* Maximum height (4 lines) */
-            overflow-y: auto;  /* Show scrollbar when needed */
+            height: 20px;      
+            min-height: 20px;  
+            max-height: 160px; 
+            overflow-y: auto;  
             font-family: inherit;
             font-size: 14px;
-            line-height: 20px; /* Consistent line height */
+            line-height: 16px;
             transition: height 0.2s ease;
         }
 
@@ -249,21 +249,21 @@
         }
     
         .n8n-chat-widget .chat-input button {
-        background: linear-gradient(135deg, var(--chat--color-primary) 0%, var(--chat--color-secondary) 100%);
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        cursor: pointer;
-        transition: transform 0.2s;
-        font-family: inherit;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        align-self: center; /* This ensures the button stays centered */
-        flex-shrink: 0; /* Prevents the button from shrinking */
+            background: linear-gradient(135deg, var(--chat--color-primary) 0%, var(--chat--color-secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            font-family: inherit;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            align-self: center; /* This ensures the button stays centered */
+            flex-shrink: 0; /* Prevents the button from shrinking */
         }
 
         .n8n-chat-widget .chat-input button:hover {
@@ -597,7 +597,7 @@
 
     .n8n-chat-widget .close-bubble:hover {
         
-backgroundColor:none
+    backgroundColor:none
         color: #ffffff;
     }
 
@@ -617,10 +617,10 @@ backgroundColor:none
     }
 
     .chat-icon {
-  object-fit: contain;
-  display: block;
-   filter: brightness(0) invert(1); 
-}
+        object-fit: contain;
+        display: block;
+        filter: brightness(0) invert(1); 
+    }
 
     `
 
@@ -1234,7 +1234,7 @@ backgroundColor:none
         this.style.height = 'auto';
         const lineBreaks = (this.value.match(/\n/g) || []).length;
         const currentLines = lineBreaks + 1; 
-        const newHeight = Math.min(Math.max(40, currentLines * 40), 160);
+        const newHeight = Math.min(Math.max(20, currentLines * 20), 160);
         this.style.height = newHeight + 'px';
         this.style.overflowY = currentLines > 4 ? 'auto' : 'hidden';
     });
