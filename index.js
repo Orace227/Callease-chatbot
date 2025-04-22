@@ -203,53 +203,54 @@
         }
 
        .n8n-chat-widget .chat-input {
-    padding: 16px;
-    background: var(--chat--color-background);
-    border-top: 1px solid rgba(1, 14, 208, 0.1);
-    display: flex;
-    gap: 8px;
-    align-items: center; /* This centers items vertically */
-}
+            padding: 16px;
+            background: var(--chat--color-background);
+            border-top: 1px solid rgba(1, 14, 208, 0.1);
+            display: flex;
+            gap: 8px;
+            align-items: center; /* This centers items vertically */
+        }
+        
+        .n8n-chat-widget .chat-input textarea {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid rgba(1, 14, 208, 0.2);
+            border-radius: 15px;
+            background: var(--chat--color-background);
+            color: var(--chat--color-font);
+            resize: none;
+            height: 40px;      /* Fixed initial height (1 line) */
+            min-height: 40px;  /* Minimum height (1 line) */
+            max-height: 160px; /* Maximum height (4 lines) */
+            overflow-y: auto;  /* Show scrollbar when needed */
+            font-family: inherit;
+            font-size: 14px;
+            line-height: 20px; /* Consistent line height */
+            transition: height 0.2s ease;
+        }
 
-    .n8n-chat-widget .chat-input textarea {
-        flex: 1;
-        padding: 12px;
-        border: 1px solid rgba(1, 14, 208, 0.2);
-        border-radius: 15px;
-        background: var(--chat--color-background);
-        color: var(--chat--color-font);
-        resize: none;
-        min-height: 40px;  /* Set a reasonable min-height */
-    height: auto;      /* Let it grow naturally */
-    overflow-y: hidden; /* Hide scrollbar initially */
+        .n8n-chat-widget .chat-input textarea::placeholder {
+            color: var(--chat--color-font);
+            opacity: 0.6;
+        }
+    
+        .n8n-chat-widget .chat-input button {
+        background: linear-gradient(135deg, var(--chat--color-primary) 0%, var(--chat--color-secondary) 100%);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        transition: transform 0.2s;
         font-family: inherit;
-        font-size: 14px;
-        max-height: 150px !important;  /* Set your desired maximum height */
-        overflow-y: auto;   /* Enable vertical scrolling */
-    }
-
-    .n8n-chat-widget .chat-input textarea::placeholder {
-        color: var(--chat--color-font);
-        opacity: 0.6;
-    }
-
-    .n8n-chat-widget .chat-input button {
-    background: linear-gradient(135deg, var(--chat--color-primary) 0%, var(--chat--color-secondary) 100%);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    transition: transform 0.2s;
-    font-family: inherit;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    align-self: center; /* This ensures the button stays centered */
-    flex-shrink: 0; /* Prevents the button from shrinking */
-    }
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        align-self: center; /* This ensures the button stays centered */
+        flex-shrink: 0; /* Prevents the button from shrinking */
+        }
 
         .n8n-chat-widget .chat-input button:hover {
             transform: scale(1.05);
@@ -1215,10 +1216,14 @@ backgroundColor:none
     })
 
     // Auto-resize textarea
-    textarea.addEventListener("input", function () {
-        this.style.height = "auto"
-        this.style.height = this.scrollHeight + "px"
-    })
+    textarea.addEventListener("input", function() {
+        this.style.height = 'auto';
+        const lineBreaks = (this.value.match(/\n/g) || []).length;
+        const currentLines = lineBreaks + 1; 
+        const newHeight = Math.min(Math.max(40, currentLines * 40), 160);
+        this.style.height = newHeight + 'px';
+        this.style.overflowY = currentLines > 4 ? 'auto' : 'hidden';
+    });
 
     toggleButton.addEventListener("click", () => {
         chatContainer.classList.toggle("open")
