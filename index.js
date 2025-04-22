@@ -223,7 +223,7 @@
         .n8n-chat-widget .chat-input textarea {
             flex: 1;
             padding: 12px;
-            border: 1px solid rgba(1, 14, 208, 0.2);
+            border: 1px solid rgba(120, 125, 192, 0.81);
             border-radius: 15px;
             background: var(--chat--color-background);
             color: var(--chat--color-font);
@@ -241,6 +241,11 @@
         .n8n-chat-widget .chat-input textarea::placeholder {
             color: var(--chat--color-font);
             opacity: 0.6;
+        }
+
+        .n8n-chat-widget .chat-input textarea:focus {
+            border-color: rgba(7, 22, 233, 0.99);
+            outline: none;
         }
     
         .n8n-chat-widget .chat-input button {
