@@ -222,19 +222,19 @@
         
         .n8n-chat-widget .chat-input textarea {
             flex: 1;
-            padding: 16px;
+            padding: 8px 16px;
             border: 1px solid rgba(120, 125, 192, 0.81);
-            border-radius: 15px;
+            border-radius: 8px;
             background: var(--chat--color-background);
             color: var(--chat--color-font);
             resize: none;
-            height: 28px;      
-            min-height: 28px;  
-            max-height: 160px; 
-            overflow-y: auto;  
+            height: auto; 
+            min-height: 36px; 
+            max-height: 160px;
+            overflow-y: hidden; 
             font-family: inherit;
             font-size: 14px;
-            line-height: 16px;
+            line-height: 14px; 
             transition: height 0.2s ease;
         }
 
@@ -244,8 +244,18 @@
         }
 
         .n8n-chat-widget .chat-input textarea:focus {
-            border-color: rgba(7, 22, 233, 0.99);
+            border: 1.5px solid rgba(11, 24, 208, 0.99);
             outline: none;
+        }
+
+        .n8n-chat-widget .chat-input button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        .n8n-chat-widget .chat-input button:disabled:hover {
+            transform: none !important;
         }
     
         .n8n-chat-widget .chat-input button {
@@ -781,6 +791,20 @@
     const sendButton = chatInterface.querySelector('button[type="submit"]')
     const quickOptionButtons = welcomeScreen.querySelectorAll(".quick-option-btn")
 
+    function updateSubmitButtonState() {
+        const isDisabled = textarea.value.trim() === '' || textarea.disabled;
+        sendButton.disabled = isDisabled;
+        
+        // Visual feedback when disabled
+        if (isDisabled) {
+            sendButton.style.opacity = '0.6';
+            sendButton.style.cursor = 'not-allowed';
+        } else {
+            sendButton.style.opacity = '1';
+            sendButton.style.cursor = 'pointer';
+        }
+    }
+
     function generateUUID() {
         return crypto.randomUUID
             ? crypto.randomUUID()
@@ -976,6 +1000,8 @@
     }
 
     async function sendMessage(message) {
+        textarea.disabled = true;
+        updateSubmitButtonState();
         if (!currentSessionId) {
             currentSessionId = generateUUID()
         }
@@ -1093,7 +1119,7 @@
         } finally {
             // Re-enable input
             textarea.disabled = false
-            sendButton.disabled = false
+            updateSubmitButtonState();
             textarea.focus()
 
         }
@@ -1229,14 +1255,16 @@
         }
     })
 
+    textarea.addEventListener('input', () => {
+        updateSubmitButtonState();
+    });
+    
+    updateSubmitButtonState();
+
     // Auto-resize textarea
-    textarea.addEventListener("input", function() {
+    textarea.addEventListener("input", function () {
         this.style.height = 'auto';
-        const lineBreaks = (this.value.match(/\n/g) || []).length;
-        const currentLines = lineBreaks + 1; 
-        const newHeight = Math.min(Math.max(20, currentLines * 20), 160);
-        this.style.height = newHeight + 'px';
-        this.style.overflowY = currentLines > 4 ? 'auto' : 'hidden';
+        this.style.height = `${Math.min(this.scrollHeight, 160)}px`;
     });
 
     toggleButton.addEventListener("click", () => {
