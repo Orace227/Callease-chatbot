@@ -912,7 +912,7 @@
                 const botMessageDiv = document.createElement("div")
                 botMessageDiv.className = "chat-message bot"
                 botMessageDiv.textContent =
-                    "Hello! I'm sobran rajak Allen, your assistant from Callease AI. May I know your name, please?"
+                    "Hello! I'm Allen, your assistant from Callease AI. May I know your name, please?"
                 console.log("Chat history:", chatHistory)
                 botMessageContainer.appendChild(botAvatar)
                 botMessageContainer.appendChild(botMessageDiv)
@@ -920,7 +920,7 @@
                 chatHistory.push({
                     type: 'bot',
                     id: generateUUID(),
-                    content: "Hello! I'm sobran rajak Allen, your assistant from Callease AI. May I know your name, please?"
+                    content: "Hello! I'm Allen, your assistant from Callease AI. May I know your name, please?"
                 });
 
             }
